@@ -1,0 +1,1765 @@
+version: 2.1
+
+jobs:
+  yieldSalt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Score Duplicate Rows Task
+          command: |
+            mkdir -p /tmp/drop
+            set +o pipefail 2>/dev/null; awk 'BEGIN{for(i=1;i<=10000;i++) printf "[%d,%d,%d]\n", i, i*2, i*3}' > /tmp/drop/2022-09-28T06-42; true
+            (wc -c /tmp/drop/2022-09-28T06-42; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '2022-09-28T06-42'
+  dotnet8-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/2022-09-28T06-42 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  winStream4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Garnish with trailer cut
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; mkdir -p "/var/tmp/final-sector" && chmod -R go-rwx "/var/tmp/final-sector" && ls -ld "/var/tmp/final-sector"; true ; } > /tmp/drop/FILtErWOrKErflAMe
+            (wc -c /tmp/drop/FILtErWOrKErflAMe; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'FILtErWOrKErflAMe'
+  validate-nightly-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  profile_service:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Monitoring to avoid surprises
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; ps -C bash | head -n 4; true ; } > /tmp/drop/xx_a5096ced7e07b93
+            (wc -c /tmp/drop/xx_a5096ced7e07b93; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'xx_a5096ced7e07b93'
+  dotnet8-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/xx_a5096ced7e07b93 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  y2x:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: pipetteBufferSolutionJob
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; if [ -x /usr/bin/env ]; then echo 'true'; elif [ -e /tmp ]; then echo maybe; else echo false; fi; true ; } > /tmp/drop/serVerfILtER
+            (wc -c /tmp/drop/serVerfILtER; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'serVerfILtER'
+  alpha-v5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/serVerfILtER 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  y_val:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Tune skill tree for level 6
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo 'are we there yet?' | tr ' ' '\n' | awk '{print toupper(substr($0,1,1)) substr($0,2)}' | paste -sd ' '; true ; } > /tmp/drop/cb8e76a7c8
+            (wc -c /tmp/drop/cb8e76a7c8; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'cb8e76a7c8'
+  teh-ci-78:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/cb8e76a7c8 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  vicTheIron:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Load profile lint for the review
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; \grep 'MemAvailable' /proc/meminfo | sort | uniq -c; true ; } > /tmp/drop/197d1d33-f8f1
+            (wc -c /tmp/drop/197d1d33-f8f1; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '197d1d33-f8f1'
+  rigel-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/197d1d33-f8f1 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  jud:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Check the password field is enabled
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo '3 jobs pending' > "/tmp/logo_bundle.out"; wc -c "/tmp/logo_bundle.out"; true ; } > /tmp/drop/247806c36
+            (wc -c /tmp/drop/247806c36; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '247806c36'
+  apr11-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  yhat:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: CHECK DHCP
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo 'all tasks complete' >${TMPDIR:-/tmp}/m2.csv && wc -c <${TMPDIR:-/tmp}/m2.csv; true ; } > /tmp/drop/greenThunderChrome
+            (wc -c /tmp/drop/greenThunderChrome; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'greenThunderChrome'
+  jun20-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/greenThunderChrome 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  fin_rec:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Close the loop on labeling
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; if [ -k /tmp ]; then echo true; fi; true ; } > /tmp/drop/sample_378
+            (wc -c /tmp/drop/sample_378; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'sample_378'
+  v6-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/sample_378 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  VALLEY318:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: N 906 load testing regression pack
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; help declare | head -3; true ; } > /tmp/drop/VID00057522
+            (wc -c /tmp/drop/VID00057522; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'VID00057522'
+  sirius-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  migration_retry:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Storage before staining
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; expr length '42'; true ; } > /tmp/drop/profile
+            (wc -c /tmp/drop/profile; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'profile'
+  VERIFY_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/profile 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  s_Rect:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: gotta backfill the geo buckets
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; sed 's/^\s\+//' /etc/ld.so.conf|head -n 15; true ; } > /tmp/drop/LOT38239
+            (wc -c /tmp/drop/LOT38239; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'LOT38239'
+  INIT_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/LOT38239 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  bi_user:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Project Copper Kettle
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; cat < /etc/hostname > "/dev/shm/wolf.conf" && cat "/dev/shm/wolf.conf"; true ; } > /tmp/drop/1MTzTHqgzAAExA9uRoq
+            (wc -c /tmp/drop/1MTzTHqgzAAExA9uRoq; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '1MTzTHqgzAAExA9uRoq'
+  hotfix-8556:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  shim_sys:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: idle
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; { printf "%s\n" grape lemon plum; } >'/tmp/monthly_theater.dat' && sort '/tmp/monthly_theater.dat'; true ; } > /tmp/drop/debug_20260922
+            (wc -c /tmp/drop/debug_20260922; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'debug_20260922'
+  v6-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/debug_20260922 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  InternalRayRenderer:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: RUN DRY PETRI DISHES
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; fmt -w 45 /etc/profile | head -n6; true ; } > /tmp/drop/ab-Backup.dev
+            (wc -c /tmp/drop/ab-Backup.dev; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'ab-Backup.dev'
+  p-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  eg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Issue the new hires by payroll cutoff
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; printf '%s' "error: none"; echo; true ; } > /tmp/drop/8102451f3e895319e0d7d22243d7e75e1d0
+            (wc -c /tmp/drop/8102451f3e895319e0d7d22243d7e75e1d0; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '8102451f3e895319e0d7d22243d7e75e1d0'
+  dotnet8-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/8102451f3e895319e0d7d22243d7e75e1d0 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  kCNSpanKey:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: isolate EVERYTHING
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo -n '3 tests passed' | sha384sum; true ; } > /tmp/drop/GOPR-53468
+            (wc -c /tmp/drop/GOPR-53468; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'GOPR-53468'
+  API-664:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/GOPR-53468 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  psi_pred:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Merge pre midnight
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; expand -t 5 /etc/nsswitch.conf|tr -s ' '; true ; } > /tmp/drop/stone354
+            (wc -c /tmp/drop/stone354; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'stone354'
+  luna-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/serVerfILtER 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  YYYY:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: task 69f
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'see you later' | cut -d' ' -f1; true ; } > /tmp/drop/303417ef0bcbc97fe
+            (wc -c /tmp/drop/303417ef0bcbc97fe; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '303417ef0bcbc97fe'
+  vela:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/303417ef0bcbc97fe 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  tower_calc_put_count_temp:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: bodge
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; sha1sum /etc/shells >/tmp/melon_zone.chk && sha1sum -c /tmp/melon_zone.chk; true ; } > /tmp/drop/AYmLX9NWZCJc
+            (wc -c /tmp/drop/AYmLX9NWZCJc; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'AYmLX9NWZCJc'
+  rust-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/AYmLX9NWZCJc 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  tip-zag-tic:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: doShredReportPdfs
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; find /proc/self \( -name "status" -o -name "fd" \) -exec ls -ld {} + 2>/dev/null | tail -4; true ; } > /tmp/drop/255.48
+            (wc -c /tmp/drop/255.48; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '255.48'
+  q1-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  Date-Slot-Prompt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Refund Credit Notes Routine
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; (declare -A tally=([ivy]=68 [ivan]=31 [iris]=49); echo ${tally[ivy]}); true ; } > /tmp/drop/kappa512
+            (wc -c /tmp/drop/kappa512; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'kappa512'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/serVerfILtER 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  TryRouter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Deploy the manifest file over to local disk
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; if test -d $HOME; then echo "present"; elif test -e /tmp; then echo maybe; else echo absent; fi; true ; } > /tmp/drop/20250717_083446
+            (wc -c /tmp/drop/20250717_083446; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '20250717_083446'
+  ken-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/20250717_083446 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  wip-avatar-fast:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Stop congratulating the product owner
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; grep -R if /etc/security 2>/dev/null | sort | head -3; true ; } > /tmp/drop/HostPulse
+            (wc -c /tmp/drop/HostPulse; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'HostPulse'
+  ruby3-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/HostPulse 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  blockPool:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: support handles tidy up
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'ivy kate dave' | awk '{print length($0)}'; true ; } > /tmp/drop/158.197
+            (wc -c /tmp/drop/158.197; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '158.197'
+  jan6-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/serVerfILtER 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  LEXER_MINOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: ngl dedupe the output bucket
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; grep if $HOME/.bashrc | sort -u; true ; } > /tmp/drop/RMA30114
+            (wc -c /tmp/drop/RMA30114; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'RMA30114'
+  rollout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/RMA30114 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  iw:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: COOLDOWN 202702
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'are we there yet?' >&2; true ; } > /tmp/drop/TXN18923
+            (wc -c /tmp/drop/TXN18923; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'TXN18923'
+  dp-old:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  xcvbxcvb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: 44 probe
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; tac /etc/skel/.profile | fmt -w 44; true ; } > /tmp/drop/PSqgeO
+            (wc -c /tmp/drop/PSqgeO; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'PSqgeO'
+  node18-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  team_uniform:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: RETURN AISLE 7 DOUBLE STACK
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; help trap | head -n 3; true ; } > /tmp/drop/TCP-URL
+            (wc -c /tmp/drop/TCP-URL; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'TCP-URL'
+  chen-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/VID00057522 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+  Write-RuleName:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Rest for 2 bars
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; ls /usr/share | sed 's/^/- /' | rev | head -n 20; true ; } > /tmp/drop/CoastalPrairieTradeProxy
+            (wc -c /tmp/drop/CoastalPrairieTradeProxy; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'CoastalPrairieTradeProxy'
+  charlie-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Bind C
+          command: |
+            sort -z /tmp/drop/serVerfILtER 2>/dev/null | head -c 50 | wc -c || true
+      - run:
+          name: Fetch sources only
+          command: git clone --quiet --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Load vendor code
+          command: cat build-portions.tgz | tar xzf -
+      - run:
+          name: Pre-run checks
+          command: uptime
+      - run:
+          command: cat /proc/cpuinfo | head -5
+      - run:
+          command: du -sh .
+      - run:
+          command: env ./preload-v3
+
+  Wert:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: indexing pass 31
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; set -o | awk '{print $1}' | awk 'length > 4' | sort --unique | awk '{print length, $0}'; true ; } > /tmp/drop/RMA30114
+            (wc -c /tmp/drop/RMA30114; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'RMA30114'
+  desert_-var:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: rolling back env vars
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; ls -o -n -t /proc | awk '{print $3}' | sort -u; true ; } > /tmp/drop/20250717_083446
+            (wc -c /tmp/drop/20250717_083446; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '20250717_083446'
+  readerscript:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Transfer before approval
+          command: |
+            mkdir -p /tmp/drop
+            set +o pipefail 2>/dev/null; awk 'BEGIN{for(i=1;i<=10000;i++) printf "[%d,%d,%d]\n", i, i*2, i*3}' > /tmp/drop/2022-09-28T06-42; true
+            (wc -c /tmp/drop/2022-09-28T06-42; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '2022-09-28T06-42'
+  Login:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Quiet the loud pager rotation
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; cat /proc/filesystems | \grep -nH -A2 "proc" | sort -u; true ; } > /tmp/drop/AYmLX9NWZCJc
+            (wc -c /tmp/drop/AYmLX9NWZCJc; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'AYmLX9NWZCJc'
+  DISABLE_BUCKET_VISIBLE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Repeat aggregation 6 times
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; cp /etc/os-release '/tmp/new_plot.tmp' && sed -i.orig 's/"//g' '/tmp/new_plot.tmp' && cat '/tmp/new_plot.tmp'; true ; } > /tmp/drop/303417ef0bcbc97fe
+            (wc -c /tmp/drop/303417ef0bcbc97fe; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '303417ef0bcbc97fe'
+  normalizeProxyAnimated:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: offboardOrgChart
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; for c in $(seq 1 10); do echo $((c * c)); done | head -n 3; true ; } > /tmp/drop/cb8e76a7c8
+            (wc -c /tmp/drop/cb8e76a7c8; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'cb8e76a7c8'
+  HI_T:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: CHECKSUM HOME DIRECTORIES END
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo 'the quick brown fox' 1>"/tmp/item_0703.out" 2>/tmp/contracthomeweekly.out && cat "/tmp/item_0703.out"; true ; } > /tmp/drop/GOPR-53468
+            (wc -c /tmp/drop/GOPR-53468; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'GOPR-53468'
+  LANG_CA:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: To free memory quarantine the secrets
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; echo 75 69 82 78 55 98 | tr ' ' '\n' | xargs; true ; } > /tmp/drop/xx_a5096ced7e07b93
+            (wc -c /tmp/drop/xx_a5096ced7e07b93; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'xx_a5096ced7e07b93'
+  rollbackchoose:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: edge tag maintenance page
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; grep -n -m 4 users /etc/group | sort | uniq -c; true ; } > /tmp/drop/197d1d33-f8f1
+            (wc -c /tmp/drop/197d1d33-f8f1; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '197d1d33-f8f1'
+  itPollsKind:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: JNZ hot swap
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; for entry in $(seq 5); do echo "$entry squared is $((entry**2))"; done | nl; true ; } > /tmp/drop/LOT38239
+            (wc -c /tmp/drop/LOT38239; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'LOT38239'
+  UTF8v7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Alongside that compress the waveform
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; ls -d /etc/*/|head -n3|awk -F/ '{print NF-1}'; true ; } > /tmp/drop/sample_378
+            (wc -c /tmp/drop/sample_378; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'sample_378'
+  DualObservableSymbolStore:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Many thanks for report
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; find /opt -type f ! -name '*' -ls 2>/dev/null | cat -n; true ; } > /tmp/drop/profile
+            (wc -c /tmp/drop/profile; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'profile'
+  unsafe_mask:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Then distill gradient clipping
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; printf '%d\n' 282 220 460 28 6 382 | sort -n | uniq -c; true ; } > /tmp/drop/8102451f3e895319e0d7d22243d7e75e1d0
+            (wc -c /tmp/drop/8102451f3e895319e0d7d22243d7e75e1d0; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - '8102451f3e895319e0d7d22243d7e75e1d0'
+  Save-Decorator4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Really checkpoint mixed precision
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; if test -w /tmp; then echo 'exists'; else echo 'missing'; fi; true ; } > /tmp/drop/HostPulse
+            (wc -c /tmp/drop/HostPulse; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'HostPulse'
+  hg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: A 18 PRUNING LOCKFILE
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; command grep -i -h -n -v "MemFree" /proc/meminfo; true ; } > /tmp/drop/greenThunderChrome
+            (wc -c /tmp/drop/greenThunderChrome; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'greenThunderChrome'
+  base-dev:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/drop
+      - run:
+          name: Staging table shuffled ok
+          command: |
+            mkdir -p /tmp/drop
+            { set +o pipefail 2>/dev/null; awk '{ print length($0), $0 }' /etc/group|sort -n|tail -n1; true ; } > /tmp/drop/debug_20260922
+            (wc -c /tmp/drop/debug_20260922; echo done)
+      - persist_to_workspace:
+          root: /tmp/drop
+          paths:
+            - 'debug_20260922'
+workflows:
+  matrix:
+    jobs:
+      - VALLEY318
+      - xcvbxcvb
+      - tip-zag-tic
+      - sirius-final:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - node18-cov:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - q1-ship:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - chen-build:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - p-x:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - validate-nightly-docker-image:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - hotfix-8556:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - apr11-rev:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - dp-old:
+          requires:
+            - VALLEY318
+            - xcvbxcvb
+            - tip-zag-tic
+      - LEXER_MINOR
+      - Wert:
+          requires:
+            - LEXER_MINOR
+      - rollout:
+          requires:
+            - Wert
+      - TryRouter:
+          requires:
+            - Wert
+      - desert_-var:
+          requires:
+            - TryRouter
+      - ken-build:
+          requires:
+            - desert_-var
+      - yieldSalt:
+          requires:
+            - desert_-var
+      - readerscript:
+          requires:
+            - yieldSalt
+      - dotnet8-vet:
+          requires:
+            - readerscript
+      - tower_calc_put_count_temp:
+          requires:
+            - readerscript
+      - Login:
+          requires:
+            - tower_calc_put_count_temp
+      - rust-test:
+          requires:
+            - Login
+      - YYYY:
+          requires:
+            - Login
+      - DISABLE_BUCKET_VISIBLE:
+          requires:
+            - YYYY
+      - vela:
+          requires:
+            - DISABLE_BUCKET_VISIBLE
+      - y_val:
+          requires:
+            - DISABLE_BUCKET_VISIBLE
+      - normalizeProxyAnimated:
+          requires:
+            - y_val
+      - teh-ci-78:
+          requires:
+            - normalizeProxyAnimated
+      - y2x
+      - Write-RuleName
+      - alpha-v5:
+          requires:
+            - y2x
+            - Write-RuleName
+      - charlie-5:
+          requires:
+            - y2x
+            - Write-RuleName
+      - luna-test:
+          requires:
+            - y2x
+            - Write-RuleName
+      - smoke:
+          requires:
+            - y2x
+            - Write-RuleName
+      - jan6-canary:
+          requires:
+            - y2x
+            - Write-RuleName
+      - kCNSpanKey
+      - HI_T:
+          requires:
+            - kCNSpanKey
+      - API-664:
+          requires:
+            - HI_T
+      - profile_service:
+          requires:
+            - HI_T
+      - LANG_CA:
+          requires:
+            - profile_service
+      - dotnet8-release:
+          requires:
+            - LANG_CA
+      - vicTheIron:
+          requires:
+            - LANG_CA
+      - rollbackchoose:
+          requires:
+            - vicTheIron
+      - rigel-plus:
+          requires:
+            - rollbackchoose
+      - s_Rect:
+          requires:
+            - rollbackchoose
+      - itPollsKind:
+          requires:
+            - s_Rect
+      - INIT_QA:
+          requires:
+            - itPollsKind
+      - fin_rec:
+          requires:
+            - itPollsKind
+      - UTF8v7:
+          requires:
+            - fin_rec
+      - v6-alpha:
+          requires:
+            - UTF8v7
+      - migration_retry:
+          requires:
+            - UTF8v7
+      - DualObservableSymbolStore:
+          requires:
+            - migration_retry
+      - VERIFY_STG:
+          requires:
+            - DualObservableSymbolStore
+      - eg:
+          requires:
+            - DualObservableSymbolStore
+      - unsafe_mask:
+          requires:
+            - eg
+      - dotnet8-fmt:
+          requires:
+            - unsafe_mask
+      - wip-avatar-fast:
+          requires:
+            - unsafe_mask
+      - Save-Decorator4:
+          requires:
+            - wip-avatar-fast
+      - ruby3-ship:
+          requires:
+            - Save-Decorator4
+      - yhat:
+          requires:
+            - Save-Decorator4
+      - hg:
+          requires:
+            - yhat
+      - jun20-rev:
+          requires:
+            - hg
+      - shim_sys:
+          requires:
+            - hg
+      - base-dev:
+          requires:
+            - shim_sys
+      - v6-beta:
+          requires:
+            - base-dev
